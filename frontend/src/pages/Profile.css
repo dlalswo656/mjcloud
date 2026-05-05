@@ -1,0 +1,27 @@
+.profile-page { }
+
+.profile-header {
+  background: white; border-radius: 12px; padding: 32px;
+  display: flex; gap: 28px; margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.profile-avatar { flex-shrink: 0; }
+.profile-avatar img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
+.default-avatar {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: #f50; color: white; font-size: 36px; font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.profile-info { flex: 1; }
+.profile-info h2 { font-size: 22px; margin-bottom: 4px; }
+.profile-username { color: #999; font-size: 14px; margin-bottom: 8px; }
+.profile-bio { color: #666; font-size: 14px; margin-bottom: 12px; line-height: 1.5; }
+.profile-stats { display: flex; gap: 20px; margin-bottom: 16px; font-size: 14px; color: #666; }
+.profile-stats strong { color: #333; }
+
+.btn-follow { background: #f50; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+.btn-following { background: white; color: #f50; border: 1px solid #f50; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+
+.profile-tracks { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.profile-tracks h3 { font-size: 17px; margin-bottom: 16px; }

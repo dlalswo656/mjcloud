@@ -1,0 +1,12 @@
+.home { }
+.search-header { margin-bottom: 20px; }
+.search-header h2 { font-size: 18px; color: #555; }
+
+.home-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.tab { background: white; border: 1px solid #ddd; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; }
+.tab.active { background: #f50; color: white; border-color: #f50; }
+
+.genre-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.genre-btn { background: white; border: 1px solid #ddd; padding: 6px 14px; border-radius: 16px; cursor: pointer; font-size: 13px; }
+.genre-btn.active { background: #f50; color: white; border-color: #f50; }
+.genre-btn:hover { border-color: #f50; }
