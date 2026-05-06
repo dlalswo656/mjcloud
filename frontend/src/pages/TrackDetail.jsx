@@ -18,6 +18,12 @@ export default function TrackDetail() {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  // 수정 모드
+  const [editing, setEditing] = useState(false);
+  const [editForm, setEditForm] = useState({ title: '', description: '', genre: '' });
+
+  const GENRES = ['팝', '록', '힙합', '재즈', '클래식', '일렉트로닉', 'R&B', '인디', '기타'];
+
   useEffect(() => {
     fetchTrack();
     fetchComments();
@@ -29,6 +35,11 @@ export default function TrackDetail() {
       setTrack(res.data);
       setLiked(res.data.likedByMe);
       setLikeCount(res.data.likeCount);
+      setEditForm({
+        title: res.data.title || '',
+        description: res.data.description || '',
+        genre: res.data.genre || '',
+      });
     } catch (err) { console.error(err); }
   };
 
@@ -76,12 +87,26 @@ export default function TrackDetail() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('삭제하시겠습니까?')) return;
+    if (!window.confirm('트랙을 삭제하시겠습니까?')) return;
     await trackApi.delete(id);
     navigate('/');
   };
 
+  const handleEditSave = async () => {
+    if (!editForm.title.trim()) return alert('제목을 입력해주세요.');
+    try {
+      await trackApi.update(id, editForm);
+      setEditing(false);
+      fetchTrack();
+    } catch (err) {
+      alert('수정 실패: ' + (err.response?.data?.message || err.message));
+    }
+  };
+
   if (!track) return <div className="loading">로딩 중...</div>;
+
+  const isOwner = user?.username === track.uploader?.username;
+  const isVideo = track.audioUrl?.endsWith('.mp4');
 
   return (
     <div className="track-detail">
@@ -96,41 +121,93 @@ export default function TrackDetail() {
         </div>
 
         <div className="player-info">
-          <h1>{track.title}</h1>
-          <Link to={`/profile/${track.uploader?.id}`} className="artist-link">
-            {track.uploader?.displayName || track.uploader?.username}
-          </Link>
-          {track.genre && <span className="genre-tag">{track.genre}</span>}
-
-          {/* 오디오 컨트롤 */}
-          <audio
-            ref={audioRef}
-            src={`http://localhost:8080${track.audioUrl}`}
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={() => setPlaying(false)}
-          />
-
-          <div className="player-controls">
-            <button className="btn-play-lg" onClick={togglePlay}>
-              {playing ? '⏸' : '▶'}
-            </button>
-            <div className="progress-bar" onClick={handleSeek}>
-              <div className="progress-fill" style={{ width: `${progress}%` }} />
+          {/* 수정 모드 */}
+          {editing ? (
+            <div className="edit-form">
+              <input
+                className="edit-input"
+                value={editForm.title}
+                onChange={e => setEditForm({ ...editForm, title: e.target.value })}
+                placeholder="제목"
+              />
+              <textarea
+                className="edit-textarea"
+                value={editForm.description}
+                onChange={e => setEditForm({ ...editForm, description: e.target.value })}
+                placeholder="설명"
+                rows={3}
+              />
+              <select
+                className="edit-select"
+                value={editForm.genre}
+                onChange={e => setEditForm({ ...editForm, genre: e.target.value })}
+              >
+                <option value="">장르 선택 안함</option>
+                {GENRES.map(g => <option key={g} value={g}>{g}</option>)}
+              </select>
+              <div className="edit-actions">
+                <button className="btn-save" onClick={handleEditSave}>저장</button>
+                <button className="btn-cancel" onClick={() => setEditing(false)}>취소</button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <h1>{track.title}</h1>
+              <Link to={`/profile/${track.uploader?.id}`} className="artist-link">
+                {track.uploader?.displayName || track.uploader?.username}
+              </Link>
+              <span className="genre-tag">{track.genre || '미분류'}</span>
+            </>
+          )}
 
-          {/* 액션 */}
+          {/* 오디오/영상 컨트롤 */}
+          {isVideo ? (
+            <video
+              ref={audioRef}
+              src={`http://localhost:8080${track.audioUrl}`}
+              onTimeUpdate={handleTimeUpdate}
+              onEnded={() => setPlaying(false)}
+              style={{ width: '100%', borderRadius: '8px', marginTop: '12px', maxHeight: '300px' }}
+              controls
+            />
+          ) : (
+            <audio
+              ref={audioRef}
+              src={`http://localhost:8080${track.audioUrl}`}
+              onTimeUpdate={handleTimeUpdate}
+              onEnded={() => setPlaying(false)}
+            />
+          )}
+
+          {/* mp3일 때만 커스텀 플레이어 */}
+          {!isVideo && (
+            <div className="player-controls">
+              <button className="btn-play-lg" onClick={togglePlay}>
+                {playing ? '⏸' : '▶'}
+              </button>
+              <div className="progress-bar" onClick={handleSeek}>
+                <div className="progress-fill" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+          )}
+
+          {/* 액션 버튼 */}
           <div className="player-actions">
             <button className={`btn-like-lg ${liked ? 'liked' : ''}`} onClick={handleLike}>
               ♥ {likeCount}
             </button>
             <span className="plays-count">▶ {track.playCount} 재생</span>
-            {user?.username === track.uploader?.username && (
-              <button onClick={handleDelete} className="btn-delete">삭제</button>
+            {isOwner && !editing && (
+              <>
+                <button className="btn-edit" onClick={() => setEditing(true)}>✏️ 수정</button>
+                <button className="btn-delete" onClick={handleDelete}>🗑️ 삭제</button>
+              </>
             )}
           </div>
 
-          {track.description && <p className="track-desc">{track.description}</p>}
+          {!editing && track.description && (
+            <p className="track-desc">{track.description}</p>
+          )}
         </div>
       </div>
 

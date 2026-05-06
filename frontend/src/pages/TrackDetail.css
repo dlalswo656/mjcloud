@@ -24,8 +24,21 @@
 .btn-like-lg { background: none; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; }
 .btn-like-lg.liked { background: #fff0ee; color: #f50; border-color: #f50; }
 .plays-count { color: #999; font-size: 13px; }
-.btn-delete { background: none; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; cursor: pointer; color: #aaa; font-size: 13px; margin-left: auto; }
+.btn-delete { background: none; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; cursor: pointer; color: #aaa; font-size: 13px; }
 .btn-delete:hover { border-color: #e53; color: #e53; }
+.btn-edit { background: none; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; cursor: pointer; color: #666; font-size: 13px; margin-left: auto; }
+.btn-edit:hover { border-color: #f50; color: #f50; }
+
+/* 수정 폼 */
+.edit-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.edit-input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 18px; font-weight: bold; outline: none; }
+.edit-input:focus { border-color: #f50; }
+.edit-textarea { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; resize: none; }
+.edit-textarea:focus { border-color: #f50; }
+.edit-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+.edit-actions { display: flex; gap: 8px; }
+.btn-save { background: #f50; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+.btn-cancel { background: none; border: 1px solid #ddd; padding: 8px 20px; border-radius: 20px; cursor: pointer; color: #666; }
 
 .comments-section { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .comments-section h3 { font-size: 17px; margin-bottom: 16px; }

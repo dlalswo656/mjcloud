@@ -68,6 +68,15 @@ public class TrackController {
         return ResponseEntity.ok(trackService.getUserTracks(userId, username));
     }
 
+    // 트랙 수정
+    @PatchMapping("/{id}")
+    public ResponseEntity<TrackDto.Response> updateTrack(
+            @PathVariable Long id,
+            @RequestBody TrackDto.UpdateRequest request,
+            @AuthenticationPrincipal UserDetails user) {
+        return ResponseEntity.ok(trackService.updateTrack(id, user.getUsername(), request));
+    }
+
     // 좋아요 토글
     @PostMapping("/{id}/like")
     public ResponseEntity<Map<String, Boolean>> toggleLike(

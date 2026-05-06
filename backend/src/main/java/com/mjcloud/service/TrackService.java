@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TrackService {
-
+    //
     private final TrackRepository trackRepository;
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
@@ -120,6 +120,26 @@ public class TrackService {
         }
     }
 
+    // 트랙 수정
+    public TrackDto.Response updateTrack(Long trackId, String username, TrackDto.UpdateRequest request) {
+        Track track = trackRepository.findById(trackId)
+                .orElseThrow(() -> new RuntimeException("트랙 없음"));
+        if (!track.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("권한 없음");
+        }
+        if (request.getTitle() != null && !request.getTitle().isBlank()) {
+            track.setTitle(request.getTitle());
+        }
+        if (request.getDescription() != null) {
+            track.setDescription(request.getDescription());
+        }
+        if (request.getGenre() != null) {
+            track.setGenre(request.getGenre());
+        }
+        trackRepository.save(track);
+        return toResponse(track, username);
+    }
+
     // 트랙 삭제
     public void deleteTrack(Long trackId, String username) {
         Track track = trackRepository.findById(trackId)
@@ -132,7 +152,12 @@ public class TrackService {
 
     // 파일 저장 유틸
     private String saveFile(MultipartFile file, String type) throws IOException {
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        // 원본 파일명에서 확장자만 추출 (한글/특수문자 제거)
+        String original = file.getOriginalFilename();
+        String ext = (original != null && original.contains("."))
+                ? original.substring(original.lastIndexOf("."))
+                : "";
+        String fileName = UUID.randomUUID() + ext;
         Path dir = Paths.get(uploadDir, type);
         Files.createDirectories(dir);
         Files.copy(file.getInputStream(), dir.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);

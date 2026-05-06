@@ -47,12 +47,21 @@ export default function TrackCard({ track, onLikeChange }) {
         </div>
       </div>
 
-      {/* 오디오 엘리먼트 */}
-      <audio
-        ref={audioRef}
-        src={`http://localhost:8080${track.audioUrl}`}
-        onEnded={() => setPlaying(false)}
-      />
+      {/* 오디오/영상 엘리먼트 */}
+      {track.audioUrl?.endsWith('.mp4') ? (
+        <video
+          ref={audioRef}
+          src={`http://localhost:8080${track.audioUrl}`}
+          onEnded={() => setPlaying(false)}
+          style={{ display: 'none' }}
+        />
+      ) : (
+        <audio
+          ref={audioRef}
+          src={`http://localhost:8080${track.audioUrl}`}
+          onEnded={() => setPlaying(false)}
+        />
+      )}
 
       {/* 트랙 정보 */}
       <div className="track-info">

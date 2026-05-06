@@ -22,6 +22,7 @@ export const trackApi = {
   getTrack:     (id)     => api.get(`/tracks/${id}`),
   getUserTracks:(userId) => api.get(`/tracks/user/${userId}`),
   upload:       (form)   => api.post('/tracks', form, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  update:       (id, data) => api.patch(`/tracks/${id}`, data),
   toggleLike:   (id)     => api.post(`/tracks/${id}/like`),
   delete:       (id)     => api.delete(`/tracks/${id}`),
 };

@@ -8,6 +8,7 @@ const GENRES = ['팝', '록', '힙합', '재즈', '클래식', '일렉트로닉'
 export default function Upload() {
   const [form, setForm] = useState({ title: '', description: '', genre: '' });
   const [audioFile, setAudioFile] = useState(null);
+  const [isVideo, setIsVideo] = useState(false);
   const [coverFile, setCoverFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -67,15 +68,21 @@ export default function Upload() {
           <input id="cover-input" type="file" accept="image/*" onChange={handleCoverChange} hidden />
         </div>
 
-        {/* 오디오 파일 */}
+        {/* 오디오/영상 파일 */}
         <div className="audio-upload">
           <label className="audio-label">
-            <span>🎵</span>
-            {audioFile ? audioFile.name : '음악 파일 선택 (MP3, WAV)'}
+            <span>{isVideo ? '🎬' : '🎵'}</span>
+            {audioFile ? audioFile.name : '파일 선택 (MP3, WAV, MP4)'}
             <input
               type="file"
-              accept="audio/*"
-              onChange={e => setAudioFile(e.target.files[0])}
+              accept="audio/*,video/mp4"
+              onChange={e => {
+                const file = e.target.files[0];
+                if (file) {
+                  setAudioFile(file);
+                  setIsVideo(file.type.startsWith('video/'));
+                }
+              }}
               hidden
             />
           </label>

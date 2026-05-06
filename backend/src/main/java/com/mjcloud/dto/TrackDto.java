@@ -31,4 +31,11 @@ public class TrackDto {
         private String description;
         private String genre;
     }
+
+    @Data @NoArgsConstructor @AllArgsConstructor
+    public static class UpdateRequest {
+        private String title;
+        private String description;
+        private String genre;
+    }
 }
