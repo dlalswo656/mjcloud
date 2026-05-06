@@ -1,3 +1,5 @@
+MjCloud Portfolio 20260506 완성
+
 feat: MJ Cloud 초기 커밋 - Music SNS 플랫폼
 [Backend - Spring Boot 3.2.5]
 - Spring Security + JWT 인증/인가
