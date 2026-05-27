@@ -1,4 +1,4 @@
-# 보고서 [MjCloud_Portfolio_Report.docx](https://github.com/user-attachments/files/27581644/MjCloud_Portfolio_Report.docx)
+# 보고서 [MjCloud_Portfolio_Report.pdf](https://github.com/user-attachments/files/28304016/MjCloud_Portfolio_Report.pdf)
 
 # MjCloud Portfolio 20260506 완성
 
